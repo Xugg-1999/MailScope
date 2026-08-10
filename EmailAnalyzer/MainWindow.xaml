@@ -1,0 +1,324 @@
+﻿<Window x:Class="EmailAnalyzer.MainWindow"
+xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+mc:Ignorable="d"
+Title="MailScope"
+Height="800"
+Width="1150"
+MinHeight="700"
+MinWidth="1000"
+WindowStartupLocation="CenterScreen">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <!--标题-->
+            <RowDefinition Height="50"/>
+            <!--邮箱配置-->
+            <RowDefinition Height="170"/>
+            <!--统计-->
+            <RowDefinition Height="90"/>
+            <!--进度-->
+            <RowDefinition Height="65"/>
+            <!--搜索-->
+            <RowDefinition Height="55"/>
+            <!--联系人-->
+            <RowDefinition Height="*"/>
+            <!--日志-->
+            <RowDefinition Height="120"/>
+            <!--版权-->
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+        <!-- =================标题================ -->
+        <TextBlock
+Grid.Row="0"
+Text="📧 MailScope"
+FontSize="30"
+FontWeight="Bold"
+VerticalAlignment="Center"/>
+        <!-- =================邮箱配置================ -->
+        <Border
+Grid.Row="1"
+Background="#F7F7F7"
+CornerRadius="12"
+Padding="20">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="45"/>
+                    <RowDefinition Height="45"/>
+                    <RowDefinition Height="45"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="250"/>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="250"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <!--邮箱类型-->
+                <TextBlock
+Text="邮箱类型"
+VerticalAlignment="Center"/>
+                <ComboBox
+Grid.Column="1"
+Height="34"
+VerticalContentAlignment="Center"
+ItemsSource="{Binding Providers}"
+SelectedItem="{Binding SelectedProvider}"
+DisplayMemberPath="Name"/>
+                <TextBlock
+Grid.Column="2"
+Text="IMAP服务器"
+VerticalAlignment="Center"/>
+                <TextBox
+Grid.Column="3"
+Height="34"
+VerticalContentAlignment="Center"
+Text="{Binding SelectedProvider.ImapHost}"/>
+                <!--账号-->
+                <TextBlock
+Grid.Row="1"
+Text="邮箱账号"
+VerticalAlignment="Center"/>
+                <TextBox
+Grid.Row="1"
+Grid.Column="1"
+Height="34"
+VerticalContentAlignment="Center"
+Text="{Binding Account}"/>
+                <TextBlock
+Grid.Row="1"
+Grid.Column="2"
+Text="端口"
+VerticalAlignment="Center"/>
+                <TextBox
+Grid.Row="1"
+Grid.Column="3"
+Height="34"
+VerticalContentAlignment="Center"
+Text="{Binding SelectedProvider.Port}"/>
+                <!--授权码-->
+                <TextBlock
+Grid.Row="2"
+Text="密码"
+VerticalAlignment="Center"/>
+                <PasswordBox
+Grid.Row="2"
+Grid.Column="1"
+Height="34"
+VerticalContentAlignment="Center"
+PasswordChanged="PasswordBox_PasswordChanged"/>
+                <!--按钮-->
+                <StackPanel
+Grid.Row="2"
+Grid.Column="4"
+Orientation="Horizontal"
+VerticalAlignment="Center"
+HorizontalAlignment="Left">
+                    <Button
+Width="90"
+Height="35"
+Content="🚀开始"
+Margin="0,0,10,0"
+Command="{Binding StartScanCommand}"
+Background="#2196F3"
+Foreground="White"/>
+                    <Button
+Width="90"
+Height="35"
+Content="⛔取消"
+Margin="0,0,10,0"
+Command="{Binding CancelScanCommand}"
+Background="#F44336"
+Foreground="White"/>
+                    <Button
+Width="90"
+Height="35"
+Content="📊导出"
+Command="{Binding ExportExcelCommand}"
+Background="#4CAF50"
+Foreground="White"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+        <!-- =================统计================ -->
+        <Grid
+Grid.Row="2"
+Margin="0,10,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Border
+Margin="5"
+Background="#E8F5E9"
+CornerRadius="10"
+Padding="12">
+                <StackPanel>
+                    <TextBlock Text="联系人"/>
+                    <TextBlock
+FontSize="28"
+FontWeight="Bold"
+Text="{Binding ContactCount}"/>
+                </StackPanel>
+            </Border>
+            <Border
+Grid.Column="1"
+Margin="5"
+Background="#E3F2FD"
+CornerRadius="10"
+Padding="12">
+                <StackPanel>
+                    <TextBlock Text="邮件数量"/>
+                    <TextBlock
+FontSize="28"
+FontWeight="Bold"
+Text="{Binding TotalMail}"/>
+                </StackPanel>
+            </Border>
+            <Border
+Grid.Column="2"
+Margin="5"
+Background="#FFF3E0"
+CornerRadius="10"
+Padding="12">
+                <StackPanel>
+                    <TextBlock Text="扫描速度"/>
+                    <TextBlock
+FontSize="24"
+FontWeight="Bold"
+Text="{Binding Speed}"/>
+                </StackPanel>
+            </Border>
+            <Border
+Grid.Column="3"
+Margin="5"
+Background="#F3E5F5"
+CornerRadius="10"
+Padding="12">
+                <StackPanel>
+                    <TextBlock Text="状态"/>
+                    <TextBlock
+FontSize="18"
+Text="{Binding Status}"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+        <!-- =================进度================ -->
+        <Border
+Grid.Row="3"
+Background="#F7F7F7"
+CornerRadius="10"
+Padding="10">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="25"/>
+                </Grid.RowDefinitions>
+                <TextBlock
+Text="📈 扫描进度"
+FontWeight="Bold"/>
+                <ProgressBar
+Grid.Row="1"
+Height="18"
+Value="{Binding Progress}"
+Maximum="100"/>
+            </Grid>
+        </Border>
+        <!-- =================搜索================ -->
+        <Border
+Grid.Row="4"
+Background="#F7F7F7"
+CornerRadius="10"
+Padding="10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="130"/>
+                    <ColumnDefinition Width="280"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock
+Text="🔍 联系人搜索"
+VerticalAlignment="Center"
+FontSize="14"/>
+                <TextBox
+Grid.Column="1"
+Height="30"
+VerticalContentAlignment="Center"
+Text="{Binding SearchText,
+UpdateSourceTrigger=PropertyChanged}"
+ToolTip="输入邮箱地址或者域名"/>
+                <TextBlock
+Grid.Column="2"
+Margin="15,0"
+Text="支持邮箱 / 域名模糊匹配"
+Foreground="Gray"
+VerticalAlignment="Center"/>
+            </Grid>
+        </Border>
+        <!-- =================联系人================ -->
+        <Grid
+Grid.Row="5">
+            <DataGrid
+Margin="0,10,0,0"
+AutoGenerateColumns="False"
+IsReadOnly="True"
+ItemsSource="{Binding ContactsView}"
+GridLinesVisibility="Horizontal">
+                <DataGrid.Columns>
+                    <DataGridTextColumn
+Header="邮箱"
+Binding="{Binding Email}"
+Width="*"/>
+                    <DataGridTextColumn
+Header="次数"
+Binding="{Binding Count}"
+Width="80"/>
+                    <DataGridTextColumn
+Header="最近联系"
+Binding="{Binding LastTime}"
+Width="180"/>
+                    <DataGridTextColumn
+Header="域名"
+Binding="{Binding Domain}"
+Width="150"/>
+                    <DataGridTextColumn
+Header="类型"
+Binding="{Binding ProviderType}"
+Width="120"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+        <!-- =================日志================ -->
+        <Border
+Grid.Row="6"
+Background="#111"
+CornerRadius="10"
+Padding="8">
+            <TextBox
+Background="Transparent"
+Foreground="White"
+FontFamily="Consolas"
+Text="{Binding Log}"
+AcceptsReturn="True"
+TextWrapping="Wrap"
+VerticalScrollBarVisibility="Auto"
+IsReadOnly="True"/>
+        </Border>
+        <!-- =================版权================ -->
+        <TextBlock
+Grid.Row="7"
+HorizontalAlignment="Center"
+VerticalAlignment="Center"
+Foreground="Gray">
+<Run Text="©MailScope | Email Intelligence Contact Analyzer | Developed by "/>
+<Hyperlink
+NavigateUri="mailto:xugg1999@outlook.com"
+RequestNavigate="Hyperlink_RequestNavigate">
+Xugg
+</Hyperlink>
+        </TextBlock>
+    </Grid>
+</Window>

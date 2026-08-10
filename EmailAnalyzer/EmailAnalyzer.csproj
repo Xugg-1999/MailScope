@@ -1,0 +1,38 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+
+	<PropertyGroup>
+
+		<OutputType>WinExe</OutputType>
+
+		<TargetFramework>net10.0-windows</TargetFramework>
+
+		<UseWPF>true</UseWPF>
+
+		<Nullable>enable</Nullable>
+		<ApplicationIcon>analysis.ico</ApplicationIcon>
+		<!-- 单文件 -->
+		<PublishSingleFile>true</PublishSingleFile>
+
+		<!-- 包含运行环境 -->
+		<SelfContained>true</SelfContained>
+
+		<!-- Windows 64位 -->
+		<RuntimeIdentifier>win-x64</RuntimeIdentifier>
+		<IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
+
+	</PropertyGroup>
+
+
+	<ItemGroup>
+
+		<PackageReference Include="MailKit" Version="4.17.0" />
+
+		<PackageReference Include="EPPlus" Version="7.5.0" />
+
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+
+	</ItemGroup>
+
+
+</Project>
