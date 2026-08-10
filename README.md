@@ -288,9 +288,14 @@ Visual Studio 2022 / Visual Studio 2026
 ## 📥 Clone
 
 ```bash
-git clone https://github.com/Xugg-1999/MailScope.git
+git clone https://github.com/Xugg-1999/AliyunEmailAnalyzer.git
 ```
 
+进入项目：
+
+```bash
+cd AliyunEmailAnalyzer
+```
 
 恢复 NuGet 包：
 
